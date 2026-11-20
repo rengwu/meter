@@ -128,7 +128,7 @@ struct LaunchAgentLoginItem: LoginItem {
 /// it *through Terminal*. The first sign is a stray Terminal window at the next
 /// login, months later, pointing at a `.build` path that may not even exist any
 /// more. So the dev copy declines to register at all; only an installed
-/// `Yacht.app` may become a login item.
+/// `Ration.app` may become a login item.
 struct UnsupportedLoginItem: LoginItem {
     var isSupported: Bool { false }
     var isEnabled: Bool { false }
@@ -143,14 +143,14 @@ enum LoginItemError: LocalizedError {
     case notAnAppBundle
 
     var errorDescription: String? {
-        "Launch at login needs Yacht to be running as an app. This copy is a "
+        "Launch at login needs Ration to be running as an app. This copy is a "
             + "loose executable, so the system would launch it through Terminal."
     }
 }
 
 // MARK: - Mechanism choice (ticket-04 experiment outcome)
 
-private let bundleIdentifier = "local.yacht"
+private let bundleIdentifier = "local.ration"
 
 /// Selects the launch-at-login mechanism for this build.
 ///

@@ -26,29 +26,30 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
           ./build.sh "$version"
-          lipo build/Yacht.app/Contents/MacOS/Yacht -verify_arch arm64 x86_64
+          for architecture in arm64 x86_64; do
+            lipo build/Ration.app/Contents/MacOS/Ration -verify_arch "$architecture"
+          done
 
       - name: Build DMG
         run: |
           brew install create-dmg
           create-dmg \
-            --volname "Yacht" \
+            --volname "Ration" \
             --window-size 500 320 \
             --icon-size 100 \
-            --icon "Yacht.app" 125 160 \
+            --icon "Ration.app" 125 160 \
             --app-drop-link 375 160 \
             --no-internet-enable \
-            "build/yacht-${GITHUB_REF_NAME}.dmg" \
-            "build/Yacht.app"
-          # Unversioned copy so the README can link straight to
-          # .../releases/latest/download/Yacht.dmg without going stale.
-          cp "build/yacht-${GITHUB_REF_NAME}.dmg" "build/Yacht.dmg"
+            "build/ration-${GITHUB_REF_NAME}.dmg" \
+            "build/Ration.app"
+          # Stable download name across Ration releases.
+          cp "build/ration-${GITHUB_REF_NAME}.dmg" "build/Ration.dmg"
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           body_path: docs/releases/${{ env.RELEASE_VERSION }}.md
           files: |
-            build/yacht-*.dmg
-            build/Yacht.dmg
+            build/ration-*.dmg
+            build/Ration.dmg
           generate_release_notes: true

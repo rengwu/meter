@@ -1,12 +1,12 @@
 ---
-title: AI subscription tracker
-updated: 2026-10-21
+title: Ration
+updated: 2026-11-20
 order: 0
 ---
 
-# AI subscription tracker
+# Ration
 
-The accepted native Swift/AppKit design is released as **0.2.0**. Start with the publication and implementation pages for current validation and limits. The earlier dashboard redesign remains rejected.
+Ration is a native macOS menu bar app for tracking coding-agent usage. The most recent release, **0.2.0**, shipped under the name Yacht. Start with the publication and implementation pages for current validation and limits. The earlier dashboard redesign remains rejected.
 
 - [Current plan and open decisions](plan.md)
 - [Native implementation and validation](native-implementation.md)

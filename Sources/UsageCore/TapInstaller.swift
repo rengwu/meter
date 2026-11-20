@@ -28,7 +28,9 @@ public enum TapInstaller {
 
     // MARK: - Pure core (the installer seam)
 
-    public static func detect(settings: Data?, tapCommand: String) -> TapStatus {
+    public static func detect(
+        settings: Data?, tapCommand: String, previousTapCommand: String? = nil
+    ) -> TapStatus {
         guard let settings,
               let root = (try? JSONSerialization.jsonObject(with: settings)) as? [String: Any],
               let statusLine = root["statusLine"]
@@ -38,7 +40,7 @@ public enum TapInstaller {
             return .foreign(command: String(describing: statusLine))
         }
         let command = line["command"] as? String ?? ""
-        if line["type"] as? String == "command", command == tapCommand {
+        if line["type"] as? String == "command", command == tapCommand || command == previousTapCommand {
             return .installed
         }
         return .foreign(command: command)
@@ -62,9 +64,12 @@ public enum TapInstaller {
 
     // MARK: - File wrappers
 
-    public static func detect(configDir: URL, tapCommand: String) -> TapStatus {
+    public static func detect(
+        configDir: URL, tapCommand: String, previousTapCommand: String? = nil
+    ) -> TapStatus {
         let file = configDir.appendingPathComponent("settings.json")
-        return detect(settings: try? Data(contentsOf: file), tapCommand: tapCommand)
+        return detect(settings: try? Data(contentsOf: file), tapCommand: tapCommand,
+                      previousTapCommand: previousTapCommand)
     }
 
     /// Rewrites configDir/settings.json with the tap installed. Atomic; throws

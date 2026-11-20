@@ -12,15 +12,15 @@ The user requested autonomous release preparation through jstack work-until-gril
 ## Expected outcomes
 
 - `VERSION`, the bundle version, and the release tag agree.
-- `./build.sh` produces a universal Apple Silicon/Intel `build/Yacht.app`, with its icons and license inside the bundle and a valid ad-hoc signature.
+- `./build.sh` produces a universal Apple Silicon/Intel `build/Ration.app`, with its icons and license inside the bundle and a valid ad-hoc signature.
 - Tag releases run core and tap tests before publishing. The release includes the prepared version-specific notes.
-- The DMG contains `Yacht.app` and an Applications link. A copy outside the checkout launches and renders its bundled provider icons.
+- The DMG contains `Ration.app` and an Applications link. A copy outside the checkout launches and renders its bundled provider icons.
 - Upgrading preserves registered accounts and settings. Offline demo edits do not write the saved configuration.
 - Existing live profiles produce usage; expired Kimi/Grok credentials remain read-only and require the provider CLI to renew them.
 
 ## Verification recipe
 
-Use [shared setup](../verification/setup.md). Run `swift run UsageCoreTests`, `bash tap/test_tap.sh`, and `./build.sh`. Inspect both version keys with `plutil`, run `lipo build/Yacht.app/Contents/MacOS/Yacht -verify_arch arm64 x86_64`, and run `codesign --verify --deep --strict build/Yacht.app`.
+Use [shared setup](../verification/setup.md). Run `swift run UsageCoreTests`, `bash tap/test_tap.sh`, and `./build.sh`. Inspect both version keys with `plutil`, check that `lipo -archs build/Ration.app/Contents/MacOS/Ration` lists both arm64 and x86_64, and run `codesign --verify --deep --strict build/Ration.app`.
 
 Create a local DMG with the release workflow's create-dmg arguments plus `--skip-jenkins` for a headless packaging check. Mount it read-only without opening Finder, copy its app into a temporary directory, verify its signature and binary hash, then eject the image. Launch that exact copy with `--demo`, check first-click rename and a display control, and inspect the usage menu with Command-U. Stop only the process created for this check, restore the normal instance, and compare the saved configuration hash.
 

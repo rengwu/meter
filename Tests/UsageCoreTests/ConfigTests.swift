@@ -339,6 +339,46 @@ func runConfigTests(_ t: Harness) {
         )
     } catch { t.check(false, "Grok registration fixture setup threw \(error)") }
 
+    // MARK: First launch after the rename
+
+    do {
+        let parent = root.appendingPathComponent("Application Support")
+        let support = AppSupport(in: parent)
+        try support.importPreviousInstallation()
+        t.check(!fm.fileExists(atPath: support.directory.path), "fresh install has nothing to import")
+
+        let legacy = parent.appendingPathComponent("Yacht")
+        let profile = root.appendingPathComponent("claude profile", isDirectory: true)
+        try fm.createDirectory(at: profile, withIntermediateDirectories: true)
+        let config = AppConfig(accounts: [Account(label: "Work", configDir: profile)])
+        try ConfigStore.save(config, to: legacy.appendingPathComponent("config.json"))
+        let caches = ["kimi-cache.json", "codex-cache.json", "grok-cache.json"]
+        for name in caches {
+            try Data(name.utf8).write(to: legacy.appendingPathComponent(name))
+        }
+        let oldCommand = try TapDeployment.deploy(to: legacy)
+        try TapInstaller.install(configDir: profile, tapCommand: oldCommand)
+
+        try support.importPreviousInstallation()
+        let configURL = support.directory.appendingPathComponent("config.json")
+        t.checkEqual(ConfigStore.load(from: configURL), config, "imports existing registered accounts")
+        for name in caches {
+            t.checkEqual(try Data(contentsOf: support.directory.appendingPathComponent(name)),
+                         Data(name.utf8), "preserves the contents of \(name)")
+        }
+        let command = TapDeployment.command(forScriptAt: TapDeployment.scriptURL(in: support.directory))
+        t.check(oldCommand != command, "new installs use the renamed tap path")
+        t.checkEqual(TapInstaller.detect(configDir: profile, tapCommand: command,
+                                         previousTapCommand: support.previousTapCommand),
+                     .installed, "recognizes the existing executable tap at its original path")
+        try fm.removeItem(at: TapDeployment.scriptURL(in: legacy))
+        t.checkEqual(support.previousTapCommand, nil, "a missing previous tap can be reinstalled")
+
+        try ConfigStore.save(AppConfig(), to: configURL)
+        try support.importPreviousInstallation()
+        t.checkEqual(ConfigStore.load(from: configURL), AppConfig(), "relaunch keeps Ration settings")
+    } catch { t.check(false, "first-launch import threw \(error)") }
+
     // MARK: Tap deployment
 
     do {
@@ -356,7 +396,7 @@ func runConfigTests(_ t: Harness) {
         // deployDir carries a space ("Application Support") on purpose: it is the
         // real app location, and the space is exactly what broke the tap in
         // acceptance. The returned command must be shell-quoted, not the bare path.
-        let deployDir = root.appendingPathComponent("Application Support/Yacht")
+        let deployDir = root.appendingPathComponent("Application Support/Ration")
         let scriptURL = TapDeployment.scriptURL(in: deployDir)
         let command = try TapDeployment.deploy(to: deployDir)
         t.checkEqual(

@@ -1,7 +1,7 @@
 #!/bin/bash
-# claude-usage-tap.sh — Claude Code status line command for the Yacht menu bar app.
-# Keep this filename: five released versions wrote its absolute path into users'
-# statusLine settings, so renaming it would strand existing Yacht installs.
+# claude-usage-tap.sh — Claude Code status line command for the Ration menu bar app.
+# Keep this filename because existing Claude profiles store its absolute path in
+# their statusLine settings.
 #
 # Reads the status line JSON payload on stdin and captures its rate_limits block to
 # usage-snapshot.json inside the config directory of whichever account is running

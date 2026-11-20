@@ -7,9 +7,9 @@ public enum TapDeployment {
 
     public static let script = """
     #!/bin/bash
-    # claude-usage-tap.sh — Claude Code status line command for the Yacht menu bar app.
-    # Keep this filename: five released versions wrote its absolute path into users'
-    # statusLine settings, so renaming it would strand existing Yacht installs.
+    # claude-usage-tap.sh — Claude Code status line command for the Ration menu bar app.
+    # Keep this filename because existing Claude profiles store its absolute path in
+    # their statusLine settings.
     #
     # Reads the status line JSON payload on stdin and captures its rate_limits block to
     # usage-snapshot.json inside the config directory of whichever account is running
@@ -42,7 +42,7 @@ public enum TapDeployment {
 
     /// The command string to store in settings.json. Claude Code runs the
     /// statusLine value **through a shell**, so a script path containing spaces
-    /// — and the app's home, `~/Library/Application Support/Yacht`, has one
+    /// — and the app's home, `~/Library/Application Support/Ration`, has one
     /// — must be shell-quoted, or the shell word-splits it and the tap never runs.
     /// This failure is invisible from inside the app: a working status line is
     /// silent, so a broken one looks identical to "no session yet." (Found in

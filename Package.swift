@@ -2,16 +2,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "Yacht",
+    name: "Ration",
     platforms: [.macOS(.v13)],
     targets: [
         // Core library: no AppKit, ever. Model, display logic, tap installer.
         .target(name: "UsageCore", path: "Sources/UsageCore"),
         // The app: a dumb projection of UsageCore's view model.
         .executableTarget(
-            name: "Yacht",
+            name: "Ration",
             dependencies: ["UsageCore"],
-            path: "Sources/Yacht",
+            path: "Sources/Ration",
             resources: [.process("Resources")]
         ),
         // Tests are a plain executable run with `swift run UsageCoreTests`:

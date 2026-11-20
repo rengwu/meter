@@ -2,7 +2,7 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")" && pwd)"
-app="$root/build/Yacht.app"
+app="$root/build/Ration.app"
 # Release tags must agree with VERSION; an explicit argument also supports previews.
 version="${1:-$(cat "$root/VERSION")}"
 if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?$ ]]; then
@@ -14,28 +14,31 @@ fi
 # multi-architecture build backend requires the full Xcode installation).
 binaries=()
 for architecture in arm64 x86_64; do
-  swift build -c release --product Yacht --arch "$architecture" --package-path "$root"
-  bin_dir="$(swift build -c release --arch "$architecture" --package-path "$root" --show-bin-path)"
-  binaries+=("$bin_dir/Yacht")
+  # Some SwiftPM versions share the release output path between architectures.
+  build_args=(-c release --arch "$architecture" --package-path "$root"
+              --scratch-path "$root/.build/universal/$architecture")
+  swift build "${build_args[@]}" --product Ration
+  bin_dir="$(swift build "${build_args[@]}" --show-bin-path)"
+  binaries+=("$bin_dir/Ration")
 done
 
 rm -rf "$app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
-lipo -create "${binaries[@]}" -output "$app/Contents/MacOS/Yacht"
+lipo -create "${binaries[@]}" -output "$app/Contents/MacOS/Ration"
 # Prebuilt so a release build needs no SVG toolchain; see Resources/make-icon.sh.
 cp "$root/Resources/AppIcon.icns" "$app/Contents/Resources/AppIcon.icns"
-cp "$root/Sources/Yacht/Resources/"*.pdf "$app/Contents/Resources/"
-cp "$root/Sources/Yacht/Resources/Lobe-LICENSE.txt" "$app/Contents/Resources/"
+cp "$root/Sources/Ration/Resources/"*.pdf "$app/Contents/Resources/"
+cp "$root/Sources/Ration/Resources/Lobe-LICENSE.txt" "$app/Contents/Resources/"
 
 cat >"$app/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleName</key>            <string>Yacht</string>
-  <key>CFBundleDisplayName</key>     <string>Yacht</string>
-  <key>CFBundleIdentifier</key>      <string>local.yacht</string>
-  <key>CFBundleExecutable</key>      <string>Yacht</string>
+  <key>CFBundleName</key>            <string>Ration</string>
+  <key>CFBundleDisplayName</key>     <string>Ration</string>
+  <key>CFBundleIdentifier</key>      <string>local.ration</string>
+  <key>CFBundleExecutable</key>      <string>Ration</string>
   <key>CFBundlePackageType</key>     <string>APPL</string>
   <!-- LSUIElement hides the Dock icon, but Finder, the DMG, Get Info and any
        app-modal alert still ask for this one. -->

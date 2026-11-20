@@ -53,7 +53,7 @@ public enum CodexBinaryLocator {
 
     /// Resolves the Settings value. An entered path is authoritative: silently
     /// falling through to a different installation would leave the field saying
-    /// one thing while Yacht executes another, and a missing override must reach
+    /// one thing while Ration executes another, and a missing override must reach
     /// the actionable `binaryNotFound` state. With no configured value, normal
     /// discovery uses the full candidate order above.
     public static func resolve(
@@ -173,10 +173,10 @@ public enum CodexFailure: Equatable {
 
     public var message: String {
         switch self {
-        case .binaryNotFound: return "can't find codex — point Yacht at it"
+        case .binaryNotFound: return "can't find codex — point Ration at it"
         case .signedOut: return "signed out — run codex to sign in"
         case .unreachable: return "couldn't reach OpenAI — wait"
-        case .unexpectedReply: return "unexpected reply from codex — update Yacht"
+        case .unexpectedReply: return "unexpected reply from codex — update Ration"
         }
     }
 }
@@ -385,7 +385,7 @@ public final class CodexClient: CodexUsageTransport {
         try encode([
             "id": 1,
             "method": "initialize",
-            "params": ["clientInfo": ["name": "Yacht", "version": clientVersion]],
+            "params": ["clientInfo": ["name": "Ration", "version": clientVersion]],
         ])
     }
 
@@ -474,7 +474,7 @@ public final class CodexClient: CodexUsageTransport {
         private let clientVersion: String
         private let callbackQueue: DispatchQueue
         private let completion: (CodexFetchResult) -> Void
-        private let queue = DispatchQueue(label: "yacht.codex-app-server")
+        private let queue = DispatchQueue(label: "ration.codex-app-server")
         private let process = Process()
         private let input = Pipe()
         private let output = Pipe()

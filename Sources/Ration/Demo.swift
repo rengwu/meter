@@ -9,7 +9,7 @@ enum Demo {
         let providers: [Provider] = [.claude, .claude, .codex, .grok, .kimi, .claude, .codex, .grok]
         let names = ["Work", "Home", "Codex", "Grok", "Kimi", "Client", "Lab", "Grok 2"]
         return AppConfig(accounts: zip(providers, names).enumerated().map { i, pair in
-            Account(provider: pair.0, label: pair.1, configDir: URL(fileURLWithPath: "/tmp/yacht-demo/\(i)"))
+            Account(provider: pair.0, label: pair.1, configDir: URL(fileURLWithPath: "/tmp/ration-demo/\(i)"))
         })
     }
 
