@@ -40,7 +40,7 @@ node docs/wiki/_build.mjs --check
 
 The core suite currently reports **448 passed, zero failed**: the original 405 checks, 38 checks for native presentation and persistence, and five Codex/Kimi discovery regression checks. Coverage includes remaining/used semantics, warning precedence, reset boundaries, unknown values, selected/missing windows, Off, same-provider registration, duplicate rejection, reorder identity, rename preservation, and old-config decoding. Discovery checks cover default and sibling profiles, file exclusion, provider isolation, credential-bearing legacy Kimi profiles, unrelated Kimi folders, and an unreadable home.
 
-The release bundle is `build/Ration.app`, built and ad-hoc signed by `build.sh`. It has not replaced an installed copy. [Version 0.2.0 is published and its downloaded assets verified](verification/runs/2026-10-21-v0.2.0-publication.md).
+The release bundle is `build/meter.app`, built and ad-hoc signed by `build.sh`. It has not replaced an installed copy. [Version 0.2.0 is published and its downloaded assets verified](verification/runs/2026-10-21-v0.2.0-publication.md).
 
 Computer-use checks on the offline native demo:
 
@@ -72,10 +72,10 @@ Kimi discovery was subsequently wired into the same sheet and verified with file
 ## Safe local inspection
 
 ```sh
-open -n build/Ration.app --args --demo
+open -n build/meter.app --args --demo
 ```
 
-Demo mode uses fictional account fixtures entirely in memory, bypassing configuration loading/writing and provider startup. It disables tap installation and launch-at-login changes. The demo's Ration menu includes **Usage Preview (Demo)** (⌘U), which opens the same native usage menu beside Settings even if the macOS menu bar is crowded.
+Demo mode uses fictional account fixtures entirely in memory, bypassing configuration loading/writing and provider startup. It disables tap installation and launch-at-login changes. The demo's meter menu includes **Usage Preview (Demo)** (⌘U), which opens the same native usage menu beside Settings even if the macOS menu bar is crowded.
 
 Add `--light` or `--contrast` for per-app light/high-contrast-light inspection; these do not change the system preference. Normal launch uses the user's actual configuration and existing provider adapters.
 

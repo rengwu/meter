@@ -14,7 +14,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private let preview = StatusContentView()
     private var addController: AddAccountController?
     private var knownWindows: [String: [UsageWindow]] = [:]
-    private let dragType = NSPasteboard.PasteboardType("local.ration.account-folder")
+    private let dragType = NSPasteboard.PasteboardType("local.meter.account-folder")
 
     init(app: AppDelegate) {
         self.app = app
@@ -22,7 +22,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
             contentRect: NSRect(x: 0, y: 0, width: 660, height: 640),
             styleMask: [.titled, .closable], backing: .buffered, defer: false
         )
-        window.title = AppDelegate.isDemo ? "Ration Settings — Demo" : "Ration Settings"
+        window.title = AppDelegate.isDemo ? "meter Settings — Demo" : "meter Settings"
         window.isReleasedWhenClosed = false
         super.init(window: window)
         window.delegate = self
@@ -89,7 +89,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
                              action: #selector(toggleLogin(_:)))
         login.state = !AppDelegate.isDemo && LaunchAtLogin.isEnabled ? .on : .off
         login.isEnabled = !AppDelegate.isDemo && LaunchAtLogin.isSupported
-        login.toolTip = AppDelegate.isDemo ? "Disabled in offline demo" : "Requires a bundled Ration.app"
+        login.toolTip = AppDelegate.isDemo ? "Disabled in offline demo" : "Requires a bundled meter.app"
         stack.addArrangedSubview(login)
         if app.config.accounts.contains(where: { $0.provider == .codex }) && app.resolvedCodexBinaryURL == nil {
             stack.addArrangedSubview(NSButton(title: "Locate Codex executable…", target: self,
@@ -438,7 +438,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         if case .foreign = app.tapStatus(for: account) {
             let alert = NSAlert()
             alert.messageText = "Replace this account’s status line?"
-            alert.informativeText = "Ration will replace the existing status-line command with its usage tap."
+            alert.informativeText = "meter will replace the existing status-line command with its usage tap."
             alert.addButton(withTitle: "Replace")
             alert.addButton(withTitle: "Cancel")
             guard alert.runModal() == .alertFirstButtonReturn else { return }

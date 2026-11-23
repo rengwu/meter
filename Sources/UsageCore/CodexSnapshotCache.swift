@@ -1,6 +1,6 @@
 import Foundation
 
-/// One last-known snapshot per CODEX_HOME. The caller chooses a Ration-owned
+/// One last-known snapshot per CODEX_HOME. The caller chooses a meter-owned
 /// cache URL; this type has no path into CODEX_HOME except the standardized
 /// directory string used as the account key.
 public enum CodexSnapshotCache {

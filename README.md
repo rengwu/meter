@@ -1,11 +1,11 @@
-<h1>Ration</h1>
+<h1>meter</h1>
 
 A macOS menu bar app that shows rate-limit usage for coding agents.
 Multi-account friendly, built in native Swift and AppKit.
 
-[![Download for macOS](https://img.shields.io/badge/Download-macOS-blue?style=for-the-badge)](https://github.com/rengwu/ration/releases/latest)
+[![Download for macOS](https://img.shields.io/badge/Download-macOS-blue?style=for-the-badge)](https://github.com/rengwu/meter/releases/latest)
 
-<img src="docs/assets/ration-demo.png" alt="Ration's native macOS menu showing usage for Claude, Codex, Grok, and Kimi accounts" width="320">
+<img src="docs/assets/meter-demo.png" alt="meter's native macOS menu showing usage for Claude, Codex, Grok, and Kimi accounts" width="320">
 
 ## Features
 
@@ -20,7 +20,7 @@ Multi-account friendly, built in native Swift and AppKit.
 - Drag to order accounts; editable labels; compact stale, awaiting-update, and no-data states
 - Launch at login
 
-<img src="docs/assets/ration-settings.png" alt="Ration Settings showing account management, display preferences, and the menu bar preview" width="660">
+<img src="docs/assets/meter-settings.png" alt="meter Settings showing account management, display preferences, and the menu bar preview" width="660">
 
 The current design and implementation notes are in [the project wiki](docs/wiki/index.md).
 
@@ -29,18 +29,18 @@ The current design and implementation notes are in [the project wiki](docs/wiki/
 - macOS 13+, on Apple Silicon or Intel
 - For Claude accounts: Claude Code installed and logged in, with `jq` available to its shell
   (for example, `brew install jq`).
-- For Kimi accounts: Kimi Code installed and logged in. Ration reads the existing access token;
+- For Kimi accounts: Kimi Code installed and logged in. meter reads the existing access token;
   use the CLI to renew an expired session.
-- For Codex accounts: the `codex` CLI installed and logged in. Ration asks it for usage;
-  the CLI handles authentication, and Ration does not read or write its credential files directly.
-- For Grok accounts: the `grok` CLI installed and logged in. Ration reads that account's session
+- For Codex accounts: the `codex` CLI installed and logged in. meter asks it for usage;
+  the CLI handles authentication, and meter does not read or write its credential files directly.
+- For Grok accounts: the `grok` CLI installed and logged in. meter reads that account's session
   token and asks grok.com for the same weekly usage bar the TUI's **Usage limit** tab shows. It
   never writes `auth.json` and never refreshes the token.
 
 ## Install
 
-1. Download the DMG from the [latest release](https://github.com/rengwu/ration/releases/latest).
-   Version 0.2.0 was published under the former name, Yacht. To run Ration from this checkout, see [Build](#build).
+1. Download the DMG from the [latest release](https://github.com/rengwu/meter/releases/latest).
+   Version 0.2.0 was published under the former name, Yacht. To run meter from this checkout, see [Build](#build).
 2. Quit any running copy, open the DMG, and drag the app into **Applications**.
 3. Open the app from Applications. Settings opens automatically when no accounts are registered.
 
@@ -48,10 +48,11 @@ The app is ad-hoc signed, not notarized. If macOS blocks a download you trust, t
 once, then use **System Settings → Privacy & Security → Open Anyway**, as described in
 [Apple's first-launch instructions](https://support.apple.com/en-ph/102445).
 
-On first launch, Ration copies your registered accounts, settings, and cached readings from
-the previous installation. Existing Claude taps continue to use their installed script.
+On first launch, meter copies your registered accounts, settings, and cached readings from
+Ration or Yacht. If both have saved settings, meter uses Ration’s. Existing Claude taps
+continue to use their installed scripts.
 If you used **Launch at login**, turn it off in the old app before quitting, then enable it in
-Ration Settings. macOS tracks the renamed app as a separate login item.
+meter Settings. macOS tracks the renamed app as a separate login item.
 
 ## Build
 
@@ -61,7 +62,7 @@ Building from source requires Xcode Command Line Tools and Swift 5.9+; full Xcod
 ./build.sh
 ```
 
-Builds a universal release binary and assembles an ad-hoc-signed `build/Ration.app`.
+Builds a universal release binary and assembles an ad-hoc-signed `build/meter.app`.
 The bundle version comes from [`VERSION`](VERSION), currently **0.2.0**.
 Move it to `/Applications` (or run it in place) and launch it like any other
 app.
@@ -81,38 +82,38 @@ To build with a specific version stamped into the bundle:
    account on its own. Discovered folders offer **Use** shortcuts in the sheet.
 4. Finish the provider-specific step below.
 
-Reopening Ration opens Settings. This also gives access if a crowded menu bar hides the
+Reopening meter opens Settings. This also gives access if a crowded menu bar hides the
 status item; set some accounts' menu bar window to **Off** to reduce its width.
 
 All settings persist to
-`~/Library/Application Support/Ration/config.json`.
+`~/Library/Application Support/meter/config.json`.
 Existing accounts and thresholds are retained. Older text-template and icon preferences remain
 in the configuration for compatibility, but the native interface uses the new Display controls.
 
 ### Claude
 
 Select the account, then click **Install Tap** in the table footer. This writes the tap script to
-`~/Library/Application Support/Ration/` and points that account's `settings.json`
+`~/Library/Application Support/meter/` and points that account's `settings.json`
 `statusLine` at it, preserving every other key already in the file. If another status
 line command is already installed, the app tells you rather than overwriting it
 silently. Usage data appears after Claude Code's next turn for that account.
 
 ### Kimi
 
-Nothing to install — register the Kimi Code home folder (`~/.kimi-code` by default) and Ration
+Nothing to install — register the Kimi Code home folder (`~/.kimi-code` by default) and meter
 polls Kimi for that account. It uses the existing session's access token without changing it; if
 that token has expired, the account shows a stale clock or no-data dash. Hover its label for the
 reason; use `kimi` again to renew the session.
 
 ### Codex
 
-Nothing to install per account. Ration finds the `codex` binary itself. If it cannot resolve one,
+Nothing to install per account. meter finds the `codex` binary itself. If it cannot resolve one,
 Settings offers **Locate Codex executable…**. Existing configured paths are preserved, and one
 executable serves every Codex account.
 
 ### Grok
 
-Nothing to install. Register the Grok home folder (`~/.grok` by default) and Ration polls grok.com
+Nothing to install. Register the Grok home folder (`~/.grok` by default) and meter polls grok.com
 for that account's weekly usage pool — the same figure `/usage` draws as **Weekly limit**. It uses
 the existing session's access token without changing it; if that token has expired, a stale clock or
 no-data dash appears. Hover the label for details, and use `grok` again to renew the session.
@@ -127,7 +128,7 @@ run:
 CLAUDE_CONFIG_DIR=~/.claude-work claude
 ```
 
-Name it `.claude<anything>` and Ration's account discovery picks it up
+Name it `.claude<anything>` and meter's account discovery picks it up
 automatically. For convenience, alias it in `~/.zshrc`:
 
 ```
@@ -147,7 +148,7 @@ Each provider is a separate adapter, and one failing provider never disturbs ano
 
 ### Claude — a tap it pushes to
 
-For Claude Code, Ration installs a small script (the "tap") as the `statusLine`
+For Claude Code, meter installs a small script (the "tap") as the `statusLine`
 command for each account you register. Claude Code can run that command on
 every turn. The tap reads the status line's JSON payload from stdin and,
 whenever it carries `rate_limits`, writes a snapshot to `usage-snapshot.json`
@@ -160,15 +161,15 @@ and writes snapshots atomically.
 
 ### Kimi — a read-only poll
 
-Ration reads the access token and expiry from that account's `credentials/kimi-code.json` and
+meter reads the access token and expiry from that account's `credentials/kimi-code.json` and
 asks Kimi's usage endpoint. It never writes that file and never refreshes the token —
 Kimi rotates refresh tokens itself, and a competing writer
 could log you out. An expired token therefore shows as expired rather than being renewed.
 
 ### Codex — its own binary, asked directly
 
-Ration runs `codex app-server` and makes one `account/rateLimits/read` request, so the figure comes
-from the vendor's own code path rather than a re-implementation of it. Ration never opens
+meter runs `codex app-server` and makes one `account/rateLimits/read` request, so the figure comes
+from the vendor's own code path rather than a re-implementation of it. meter never opens
 `auth.json`; codex owns its own token. It also reads the modification time of the newest rollout
 file under `CODEX_HOME/sessions` — never the contents — to tell an active session from an idle
 one.
@@ -176,7 +177,7 @@ one.
 ### Grok — the same weekly bar as `/usage`
 
 Grok's TUI already fetches the weekly pool from
-`https://cli-chat-proxy.grok.com/v1/billing?format=credits`. Ration reads the access token already
+`https://cli-chat-proxy.grok.com/v1/billing?format=credits`. meter reads the access token already
 sitting in that account's `auth.json` and asks the same endpoint, so the menu bar is
 `creditUsagePercent` against the period's reset — not a reconstruction from local transcripts. It
 never writes `auth.json` and never refreshes the token. An expired token therefore shows as expired
@@ -185,7 +186,7 @@ rather than being renewed.
 ### Refresh timing and saved readings
 
 Kimi and Grok poll about once a minute while their saved tokens are unexpired. If credentials
-are missing or expired, Ration skips network requests and checks the local credentials every minute
+are missing or expired, meter skips network requests and checks the local credentials every minute
 for a renewed session. Codex polls about once a minute while a session has recent activity and
 every 15 minutes while idle.
 
@@ -206,10 +207,10 @@ To inspect the native interface with eight fictional accounts and no provider re
 configuration writes:
 
 ```
-open -n build/Ration.app --args --demo
+open -n build/meter.app --args --demo
 ```
 
-Demo mode opens Settings; **Ration → Usage Preview (Demo)** (⌘U) opens the same native usage
+Demo mode opens Settings; **meter → Usage Preview (Demo)** (⌘U) opens the same native usage
 menu beside it. Add `--light` or `--contrast` to inspect light or high-contrast light appearance
 without changing the system setting. Launch-at-login and tap installation are disabled in demo mode.
 
@@ -220,7 +221,7 @@ Project layout:
 - `Sources/UsageCore` — model, config, the four provider adapters
   (`SnapshotReader`/`TapInstaller` for Claude, `KimiProvider`, `CodexProvider`, `GrokProvider`),
   and view-model rendering. No AppKit dependency, so it's testable headless.
-- `Sources/Ration` — the app: status item, settings window, launch-at-login.
+- `Sources/meter` — the app: status item, settings window, launch-at-login.
   A thin projection of `UsageCore`'s view model.
 - `Tests/UsageCoreTests` — the test suite.
 - `tap/claude-usage-tap.sh` — the Claude tap script, kept in sync with the copy
@@ -236,12 +237,12 @@ Merge those changes into `main` and wait for CI to pass, then tag that commit:
 git switch main
 git pull --ff-only
 release_version="$(cat VERSION)"
-git tag -a "v${release_version}" -m "Release Ration ${release_version}"
+git tag -a "v${release_version}" -m "Release meter ${release_version}"
 git push origin "v${release_version}"
 ```
 
 This triggers `.github/workflows/release.yml`, which verifies the tag matches `VERSION`,
 runs the core and tap tests, builds both CPU architectures, verifies the app signature,
 packages it as a DMG, and publishes a GitHub Release with the
-versioned DMG and an unversioned `Ration.dmg`. Every push and PR to `main` also runs
+versioned DMG and an unversioned `meter.dmg`. Every push and PR to `main` also runs
 `.github/workflows/ci.yml` (build + core and tap tests).

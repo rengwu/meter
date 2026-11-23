@@ -1,6 +1,6 @@
 import Foundation
 
-/// A source Ration knows how to register. Provider selection is explicit: the
+/// A source meter knows how to register. Provider selection is explicit: the
 /// presence of a provider's files on disk never creates an account.
 public enum Provider: String, CaseIterable, Codable {
     case claude
@@ -342,14 +342,14 @@ public struct AccountState: Equatable {
     /// Impure gatherer for the composition root: reads the snapshot and detects
     /// the tap in one pass over the account's config directory.
     public static func gather(
-        account: Account, tapCommand: String, previousTapCommand: String? = nil, previous: Snapshot? = nil
+        account: Account, tapCommand: String, previousTapCommands: [String] = [], previous: Snapshot? = nil
     ) -> AccountState {
         let snapshot = SnapshotReader.read(configDir: account.configDir)
         return AccountState(
             account: account,
             snapshot: snapshot ?? previous,
             tapStatus: TapInstaller.detect(configDir: account.configDir, tapCommand: tapCommand,
-                                           previousTapCommand: previousTapCommand),
+                                           previousTapCommands: previousTapCommands),
             stale: snapshot == nil && previous != nil
         )
     }

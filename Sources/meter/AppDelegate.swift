@@ -10,12 +10,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     static let supportDir = support.directory
     static let configURL = supportDir.appendingPathComponent("config.json")
     /// Kimi's last-known figures, so a relaunch shows what the bar was showing
-    /// when it quit. Ration's own directory — never anything under KIMI_CODE_HOME.
+    /// when it quit. meter's own directory — never anything under KIMI_CODE_HOME.
     static let kimiCacheURL = supportDir.appendingPathComponent("kimi-cache.json")
     /// Codex's last-known figures, keyed by CODEX_HOME. Like the Kimi cache,
-    /// this is Ration-owned and never placed under an account directory.
+    /// this is meter-owned and never placed under an account directory.
     static let codexCacheURL = supportDir.appendingPathComponent("codex-cache.json")
-    /// Grok's last-known figures, keyed by GROK_HOME. Ration-owned, never
+    /// Grok's last-known figures, keyed by GROK_HOME. meter-owned, never
     /// written next to `auth.json`.
     static let grokCacheURL = supportDir.appendingPathComponent("grok-cache.json")
     /// The command the installer writes; detection compares against it whether
@@ -93,8 +93,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         editItem.submenu = editMenu
 
         let mainMenu = NSMenu()
-        let appItem = NSMenuItem(title: "Ration", action: nil, keyEquivalent: "")
-        let appMenu = NSMenu(title: "Ration")
+        let appItem = NSMenuItem(title: "meter", action: nil, keyEquivalent: "")
+        let appMenu = NSMenu(title: "meter")
         let settingsItem = appMenu.addItem(withTitle: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         settingsItem.target = self
         if Self.isDemo {
@@ -102,7 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             previewItem.target = self
         }
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Quit Ration", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit meter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
         mainMenu.addItem(appItem)
         editItem.title = "Edit"
@@ -125,7 +125,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             config = next
         } catch {
             let alert = NSAlert(error: error)
-            alert.messageText = "Couldn’t save Ration settings"
+            alert.messageText = "Couldn’t save meter settings"
             alert.runModal()
         }
         refresh()
@@ -133,7 +133,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     func tapStatus(for account: Account) -> TapStatus {
         TapInstaller.detect(configDir: account.configDir, tapCommand: Self.tapCommand,
-                            previousTapCommand: Self.support.previousTapCommand)
+                            previousTapCommands: Self.support.previousTapCommands)
     }
 
     /// Deploy the shared script and write the status line into this account's
@@ -160,7 +160,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             case .claude:
                 return AccountState.gather(
                     account: account, tapCommand: Self.tapCommand,
-                    previousTapCommand: Self.support.previousTapCommand,
+                    previousTapCommands: Self.support.previousTapCommands,
                     previous: previousStates.first { $0.account.configDir == account.configDir }?.snapshot
                 )
             case .kimi:
@@ -180,7 +180,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             statusItem.length = statusContent.contentWidth
             button.image = statusContent.image(appearance: button.effectiveAppearance)
         }
-        statusItem.button?.setAccessibilityLabel("Ration usage")
+        statusItem.button?.setAccessibilityLabel("meter usage")
         statusItem.button?.setAccessibilityValue(statusContent.toolTip)
         statusItem.button?.toolTip = statusContent.toolTip
         if menuIsOpen {
@@ -234,7 +234,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         settings.target = self
         menu.addItem(settings)
         menu.addItem(NSMenuItem(
-            title: "Quit Ration", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"
+            title: "Quit meter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"
         ))
         return menu
     }

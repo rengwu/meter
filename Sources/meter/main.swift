@@ -6,7 +6,7 @@ if !AppDelegate.isDemo {
         try AppDelegate.support.importPreviousInstallation()
     } catch {
         let alert = NSAlert(error: error)
-        alert.messageText = "Couldn’t import your settings into Ration"
+        alert.messageText = "Couldn’t import your settings into meter"
         alert.runModal()
         exit(EXIT_FAILURE)
     }

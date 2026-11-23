@@ -55,7 +55,7 @@ The [round 4 answers](journal/2026-10-20-grill-1664761b-a44e-468f-a6d4-1ce37f6b6
 - Defaults: show accounts as labels; percentages as used; resets as a countdown.
 - A stale figure in the menu bar is dimmed only. The dropdown keeps the clock glyph with the age.
 - Meter colour uses configurable thresholds (details in round 5).
-- The dropdown keeps "Quit Ration".
+- The dropdown keeps "Quit meter".
 - Local-profile account setup is accepted (below).
 
 The [round 5 answers](journal/2026-10-20-grill-94e43e24-0344-4592-9f1e-8eee6e7b6cb6.md) complete the visual states:
@@ -81,7 +81,7 @@ The [table review](journal/2026-10-20-grill-38baa3c1-ee26-4927-a545-81600f42bc14
 
 The label editor starts at a small minimum width and grows with the entered text, instead of filling the Account column. The native implementation uses 72 pt as the minimum and caps growth at the column boundary; these measurements are assistant-chosen implementation details, not separate user requirements. Keep immediate first-click editing and show the field border only while editing.
 
-The grouped lists in macOS **Input Monitoring** and **Developer Tools** guide the rounded container, uniform row backgrounds, inset separators, and integrated add/remove footer. The user approved the refinement, then explicitly asked not to overcomplicate or overfit it. The later instruction to follow Apple’s native guidelines takes precedence over matching screenshot details. Ration uses NSTableView’s standard headers, separators, selection, and column resizing, plus semantic system colors. Custom header/separator drawing was removed, and scrollbars follow the system preference. The drag handles stay quietly visible; there is no hover-specific behavior or custom light/dark palette. The screenshots do not establish which public control or internal implementation System Settings uses.
+The grouped lists in macOS **Input Monitoring** and **Developer Tools** guide the rounded container, uniform row backgrounds, inset separators, and integrated add/remove footer. The user approved the refinement, then explicitly asked not to overcomplicate or overfit it. The later instruction to follow Apple’s native guidelines takes precedence over matching screenshot details. meter uses NSTableView’s standard headers, separators, selection, and column resizing, plus semantic system colors. Custom header/separator drawing was removed, and scrollbars follow the system preference. The drag handles stay quietly visible; there is no hover-specific behavior or custom light/dark palette. The screenshots do not establish which public control or internal implementation System Settings uses.
 
 The selected Claude account's existing Install/Replace Tap action remains available in the footer when needed. Up to six rows are visible before scrolling. The window fits the settings content and adjusts when accounts are added or removed, leaving a normal bottom margin.
 
@@ -100,7 +100,7 @@ This is the simplest complete fit for the established monitoring task because th
 Observed in the current source:
 
 - `Sources/UsageCore/Model.swift` stores provider, label, and config directory per account. Separate local profiles can belong to the same provider.
-- `Sources/Ration/SettingsWindowController.swift` already offers provider selection and a native folder picker, and registers discovered folders through the same function.
+- `Sources/meter/SettingsWindowController.swift` already offers provider selection and a native folder picker, and registers discovered folders through the same function.
 - `Sources/UsageCore/AppConfig.swift` discovers the standard profile folders for all four providers: `.claude*`, `.codex*`, `.kimi-code*`, and `.grok*` directories under the user's home. Codex and Kimi discovery were added after the user's fresh-start tests exposed the missing paths. Kimi also lists legacy `.kimi*` folders containing `credentials/kimi-code.json`, after the current Code homes; this finds older signed-in profiles without including unrelated folders such as `.kimi-webbridge`. Discovery is a convenience, not proof of valid credentials; the manual path supports other/custom locations.
 
 Following `rule-lean`, reuse that implementation where it fits rather than expanding discovery or sign-in scope for hypothetical needs. Do not assume universal provider discovery.
@@ -167,7 +167,7 @@ The user explicitly delegated discretion on 2026-10-20 while reiterating native 
 
 No measured live-provider CPU/memory/wakeup guarantee is claimed. Offline UI measurements and remaining verification limits belong in the implementation page.
 
-When figures exceed the space beside the notch, macOS may hide the status item. Reopening Ration opens Settings, where the accepted per-account "Off" option reduces its width; no automatic truncation has been requested. Provider setup requirements must be verified before changing the existing integration paths.
+When figures exceed the space beside the notch, macOS may hide the status item. Reopening meter opens Settings, where the accepted per-account "Off" option reduces its width; no automatic truncation has been requested. Provider setup requirements must be verified before changing the existing integration paths.
 
 ## Decision history
 

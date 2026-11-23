@@ -369,15 +369,47 @@ func runConfigTests(_ t: Harness) {
         let command = TapDeployment.command(forScriptAt: TapDeployment.scriptURL(in: support.directory))
         t.check(oldCommand != command, "new installs use the renamed tap path")
         t.checkEqual(TapInstaller.detect(configDir: profile, tapCommand: command,
-                                         previousTapCommand: support.previousTapCommand),
+                                         previousTapCommands: support.previousTapCommands),
                      .installed, "recognizes the existing executable tap at its original path")
         try fm.removeItem(at: TapDeployment.scriptURL(in: legacy))
-        t.checkEqual(support.previousTapCommand, nil, "a missing previous tap can be reinstalled")
+        t.checkEqual(support.previousTapCommands, [], "a missing previous tap can be reinstalled")
 
         try ConfigStore.save(AppConfig(), to: configURL)
         try support.importPreviousInstallation()
-        t.checkEqual(ConfigStore.load(from: configURL), AppConfig(), "relaunch keeps Ration settings")
+        t.checkEqual(ConfigStore.load(from: configURL), AppConfig(), "relaunch keeps meter settings")
     } catch { t.check(false, "first-launch import threw \(error)") }
+
+    do {
+        let parent = root.appendingPathComponent("both installations")
+        let support = AppSupport(in: parent)
+        let older = parent.appendingPathComponent("Yacht")
+        let newer = parent.appendingPathComponent("Ration")
+        let config = AppConfig(accounts: [Account(label: "Work", configDir: root)])
+        try ConfigStore.save(config, to: older.appendingPathComponent("config.json"))
+        // An intentionally empty account list in the newer install is authoritative.
+        try ConfigStore.save(AppConfig(), to: newer.appendingPathComponent("config.json"))
+        let cache = "codex-cache.json"
+        try Data("older".utf8).write(to: older.appendingPathComponent(cache))
+        try Data("newer".utf8).write(to: newer.appendingPathComponent(cache))
+        let olderTap = try TapDeployment.deploy(to: older)
+        let newerTap = try TapDeployment.deploy(to: newer)
+
+        try support.importPreviousInstallation()
+        t.checkEqual(support.directory.lastPathComponent, "meter", "uses meter's support directory")
+        let importedConfig = try Data(contentsOf: support.directory.appendingPathComponent("config.json"))
+        t.checkEqual(importedConfig, try Data(contentsOf: newer.appendingPathComponent("config.json")),
+                     "imports Ration's settings when both installations exist")
+        t.checkEqual(try Data(contentsOf: support.directory.appendingPathComponent(cache)),
+                     Data("newer".utf8), "imports the same installation's cache")
+
+        let command = TapDeployment.command(forScriptAt: TapDeployment.scriptURL(in: support.directory))
+        for installed in [olderTap, newerTap] {
+            let settings = try TapInstaller.install(settings: nil, tapCommand: installed)
+            t.checkEqual(TapInstaller.detect(settings: settings, tapCommand: command,
+                                             previousTapCommands: support.previousTapCommands),
+                         .installed, "profiles can keep taps from either previous installation")
+        }
+    } catch { t.check(false, "import from multiple installations threw \(error)") }
 
     // MARK: Tap deployment
 
@@ -396,7 +428,7 @@ func runConfigTests(_ t: Harness) {
         // deployDir carries a space ("Application Support") on purpose: it is the
         // real app location, and the space is exactly what broke the tap in
         // acceptance. The returned command must be shell-quoted, not the bare path.
-        let deployDir = root.appendingPathComponent("Application Support/Ration")
+        let deployDir = root.appendingPathComponent("Application Support/meter")
         let scriptURL = TapDeployment.scriptURL(in: deployDir)
         let command = try TapDeployment.deploy(to: deployDir)
         t.checkEqual(

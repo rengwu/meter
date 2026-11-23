@@ -141,9 +141,9 @@ func runCodexProviderTests(_ t: Harness) {
         )
         let initializeParams = initialize["params"] as? [String: Any]
         let clientInfo = initializeParams?["clientInfo"] as? [String: Any]
-        t.checkEqual(clientInfo?["name"] as? String, "Ration", "client: identifies Ration")
+        t.checkEqual(clientInfo?["name"] as? String, "meter", "client: identifies meter")
         t.checkEqual(
-            clientInfo?["version"] as? String, "test-version", "client: sends Ration's version"
+            clientInfo?["version"] as? String, "test-version", "client: sends meter's version"
         )
 
         let initialized = try object(CodexClient.initializedNotification())
@@ -281,7 +281,7 @@ func runCodexProviderTests(_ t: Harness) {
     // MARK: Four actionable response states and carry-forward
 
     let stateCases: [(CodexFetchResult, CodexFailure, String)] = [
-        (.binaryNotFound, .binaryNotFound, "can't find codex — point Ration at it"),
+        (.binaryNotFound, .binaryNotFound, "can't find codex — point meter at it"),
         (
             .jsonRPCError(
                 code: -32600,
@@ -291,7 +291,7 @@ func runCodexProviderTests(_ t: Harness) {
             "signed out — run codex to sign in"
         ),
         (.timeout, .unreachable, "couldn't reach OpenAI — wait"),
-        (.response(Data("{".utf8)), .unexpectedReply, "unexpected reply from codex — update Ration"),
+        (.response(Data("{".utf8)), .unexpectedReply, "unexpected reply from codex — update meter"),
     ]
     for (result, expected, message) in stateCases {
         t.checkEqual(
@@ -545,7 +545,7 @@ func runCodexProviderTests(_ t: Harness) {
     }
 
     let auth = codexHome.appendingPathComponent("auth.json")
-    try? Data("credential bytes Ration must never touch".utf8).write(to: auth)
+    try? Data("credential bytes meter must never touch".utf8).write(to: auth)
     let beforeHome = tree(codexHome)
     var clock = capturedAt
     var published: [CodexProviderState] = []
@@ -589,11 +589,11 @@ func runCodexProviderTests(_ t: Harness) {
     t.checkEqual(
         CodexRolloutLiveness.newestModificationDate(codexHome: codexHome),
         freshDate,
-        "liveness: Ration's own poll does not advance the rollout signal"
+        "liveness: meter's own poll does not advance the rollout signal"
     )
     t.checkEqual(
         tree(codexHome), beforeHome,
-        "safety: Ration-owned polling work creates or modifies nothing under CODEX_HOME"
+        "safety: meter-owned polling work creates or modifies nothing under CODEX_HOME"
     )
 
     let cold = CodexUsagePoller(
@@ -624,13 +624,13 @@ func runCodexProviderTests(_ t: Harness) {
         "poller: an unresolved binary reaches the can't-find-codex state"
     )
 
-    let cacheURL = root.appendingPathComponent("ration-support/codex-cache.json")
+    let cacheURL = root.appendingPathComponent("meter-support/codex-cache.json")
     t.checkEqual(
         CodexSnapshotCache.snapshot(
             codexHome: codexHome, in: CodexSnapshotCache.load(from: cacheURL)
         ),
         nil,
-        "cache: a missing Ration cache is no prior figure"
+        "cache: a missing meter cache is no prior figure"
     )
     try? CodexSnapshotCache.store(known, codexHome: codexHome, at: cacheURL)
     let restored = CodexSnapshotCache.snapshot(
@@ -651,7 +651,7 @@ func runCodexProviderTests(_ t: Harness) {
     )
     t.checkEqual(
         tree(codexHome), beforeHome,
-        "safety: caching writes only to Ration support, never CODEX_HOME"
+        "safety: caching writes only to meter support, never CODEX_HOME"
     )
 
     let claude = AccountState(

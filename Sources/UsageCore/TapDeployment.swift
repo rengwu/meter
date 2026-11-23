@@ -7,7 +7,7 @@ public enum TapDeployment {
 
     public static let script = """
     #!/bin/bash
-    # claude-usage-tap.sh — Claude Code status line command for the Ration menu bar app.
+    # claude-usage-tap.sh — Claude Code status line command for the meter menu bar app.
     # Keep this filename because existing Claude profiles store its absolute path in
     # their statusLine settings.
     #
@@ -42,7 +42,7 @@ public enum TapDeployment {
 
     /// The command string to store in settings.json. Claude Code runs the
     /// statusLine value **through a shell**, so a script path containing spaces
-    /// — and the app's home, `~/Library/Application Support/Ration`, has one
+    /// — and the app's home, `~/Library/Application Support/meter`, has one
     /// — must be shell-quoted, or the shell word-splits it and the tap never runs.
     /// This failure is invisible from inside the app: a working status line is
     /// silent, so a broken one looks identical to "no session yet." (Found in

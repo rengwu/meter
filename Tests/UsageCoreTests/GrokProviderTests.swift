@@ -284,14 +284,14 @@ func runGrokProviderTests(_ t: Harness) {
         )
     }
 
-    // MARK: Cache — Ration-owned, never next to auth.json
+    // MARK: Cache — meter-owned, never next to auth.json
 
     do {
         let grokHome = root.appendingPathComponent("cache-home")
         try fm.createDirectory(at: grokHome, withIntermediateDirectories: true)
         try Data("{}".utf8).write(to: grokHome.appendingPathComponent("auth.json"))
         let beforeHome = ((try? fm.subpathsOfDirectory(atPath: grokHome.path)) ?? []).sorted()
-        let cacheURL = root.appendingPathComponent("ration-support/grok-cache.json")
+        let cacheURL = root.appendingPathComponent("meter-support/grok-cache.json")
         try GrokSnapshotCache.store(known, grokHome: grokHome, at: cacheURL)
         t.checkEqual(
             GrokSnapshotCache.snapshot(
@@ -303,7 +303,7 @@ func runGrokProviderTests(_ t: Harness) {
         t.checkEqual(
             ((try? fm.subpathsOfDirectory(atPath: grokHome.path)) ?? []).sorted(),
             beforeHome,
-            "cache: storing writes only to Ration support, never the Grok home"
+            "cache: storing writes only to meter support, never the Grok home"
         )
     } catch {
         t.check(false, "cache fixture threw \(error)")
