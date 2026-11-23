@@ -10,12 +10,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     static let supportDir = support.directory
     static let configURL = supportDir.appendingPathComponent("config.json")
     /// Kimi's last-known figures, so a relaunch shows what the bar was showing
-    /// when it quit. meter's own directory — never anything under KIMI_CODE_HOME.
+    /// when it quit. Meter's own directory — never anything under KIMI_CODE_HOME.
     static let kimiCacheURL = supportDir.appendingPathComponent("kimi-cache.json")
     /// Codex's last-known figures, keyed by CODEX_HOME. Like the Kimi cache,
-    /// this is meter-owned and never placed under an account directory.
+    /// this is Meter-owned and never placed under an account directory.
     static let codexCacheURL = supportDir.appendingPathComponent("codex-cache.json")
-    /// Grok's last-known figures, keyed by GROK_HOME. meter-owned, never
+    /// Grok's last-known figures, keyed by GROK_HOME. Meter-owned, never
     /// written next to `auth.json`.
     static let grokCacheURL = supportDir.appendingPathComponent("grok-cache.json")
     /// The command the installer writes; detection compares against it whether
@@ -93,8 +93,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         editItem.submenu = editMenu
 
         let mainMenu = NSMenu()
-        let appItem = NSMenuItem(title: "meter", action: nil, keyEquivalent: "")
-        let appMenu = NSMenu(title: "meter")
+        let appItem = NSMenuItem(title: "Meter", action: nil, keyEquivalent: "")
+        let appMenu = NSMenu(title: "Meter")
         let settingsItem = appMenu.addItem(withTitle: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         settingsItem.target = self
         if Self.isDemo {
@@ -102,7 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             previewItem.target = self
         }
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Quit meter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit Meter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
         mainMenu.addItem(appItem)
         editItem.title = "Edit"
@@ -125,7 +125,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             config = next
         } catch {
             let alert = NSAlert(error: error)
-            alert.messageText = "Couldn’t save meter settings"
+            alert.messageText = "Couldn’t save Meter settings"
             alert.runModal()
         }
         refresh()
@@ -180,7 +180,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             statusItem.length = statusContent.contentWidth
             button.image = statusContent.image(appearance: button.effectiveAppearance)
         }
-        statusItem.button?.setAccessibilityLabel("meter usage")
+        statusItem.button?.setAccessibilityLabel("Meter usage")
         statusItem.button?.setAccessibilityValue(statusContent.toolTip)
         statusItem.button?.toolTip = statusContent.toolTip
         if menuIsOpen {
@@ -234,7 +234,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         settings.target = self
         menu.addItem(settings)
         menu.addItem(NSMenuItem(
-            title: "Quit meter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"
+            title: "Quit Meter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"
         ))
         return menu
     }

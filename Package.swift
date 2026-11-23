@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "meter",
+    name: "Meter",
     platforms: [.macOS(.v13)],
     targets: [
         // Core library: no AppKit, ever. Model, display logic, tap installer.
         .target(name: "UsageCore", path: "Sources/UsageCore"),
         // The app: a dumb projection of UsageCore's view model.
         .executableTarget(
-            name: "meter",
+            name: "Meter",
             dependencies: ["UsageCore"],
             path: "Sources/meter",
             resources: [.process("Resources")]

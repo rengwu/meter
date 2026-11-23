@@ -5,7 +5,7 @@ import Foundation
 // of a cache file stays a storage concern rather than something the display or
 // the adapters have an opinion about.
 //
-// This writes to meter's own Application Support directory and nowhere else.
+// This writes to Meter's own Application Support directory and nowhere else.
 // The credential file under KIMI_CODE_HOME is read-only to this app — a
 // safety boundary, because a write-back there can log the user out of Kimi —
 // and nothing in this file goes near it.

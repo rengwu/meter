@@ -376,7 +376,7 @@ func runConfigTests(_ t: Harness) {
 
         try ConfigStore.save(AppConfig(), to: configURL)
         try support.importPreviousInstallation()
-        t.checkEqual(ConfigStore.load(from: configURL), AppConfig(), "relaunch keeps meter settings")
+        t.checkEqual(ConfigStore.load(from: configURL), AppConfig(), "relaunch keeps Meter settings")
     } catch { t.check(false, "first-launch import threw \(error)") }
 
     do {
@@ -395,7 +395,7 @@ func runConfigTests(_ t: Harness) {
         let newerTap = try TapDeployment.deploy(to: newer)
 
         try support.importPreviousInstallation()
-        t.checkEqual(support.directory.lastPathComponent, "meter", "uses meter's support directory")
+        t.checkEqual(support.directory.lastPathComponent, "meter", "uses Meter's support directory")
         let importedConfig = try Data(contentsOf: support.directory.appendingPathComponent("config.json"))
         t.checkEqual(importedConfig, try Data(contentsOf: newer.appendingPathComponent("config.json")),
                      "imports Ration's settings when both installations exist")

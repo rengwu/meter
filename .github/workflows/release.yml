@@ -27,29 +27,29 @@ jobs:
           echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
           ./build.sh "$version"
           for architecture in arm64 x86_64; do
-            lipo build/meter.app/Contents/MacOS/meter -verify_arch "$architecture"
+            lipo build/Meter.app/Contents/MacOS/Meter -verify_arch "$architecture"
           done
 
       - name: Build DMG
         run: |
           brew install create-dmg
           create-dmg \
-            --volname "meter" \
+            --volname "Meter" \
             --window-size 500 320 \
             --icon-size 100 \
-            --icon "meter.app" 125 160 \
+            --icon "Meter.app" 125 160 \
             --app-drop-link 375 160 \
             --no-internet-enable \
-            "build/meter-${GITHUB_REF_NAME}.dmg" \
-            "build/meter.app"
-          # Stable download name across meter releases.
-          cp "build/meter-${GITHUB_REF_NAME}.dmg" "build/meter.dmg"
+            "build/Meter-${GITHUB_REF_NAME}.dmg" \
+            "build/Meter.app"
+          # Stable download name across Meter releases.
+          cp "build/Meter-${GITHUB_REF_NAME}.dmg" "build/Meter.dmg"
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           body_path: docs/releases/${{ env.RELEASE_VERSION }}.md
           files: |
-            build/meter-*.dmg
-            build/meter.dmg
+            build/Meter-*.dmg
+            build/Meter.dmg
           generate_release_notes: true

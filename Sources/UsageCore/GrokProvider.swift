@@ -408,7 +408,7 @@ public final class GrokUsagePoller {
 
 // MARK: - Persistence
 
-/// One last-known snapshot per GROK_HOME. meter-owned; never written under the
+/// One last-known snapshot per GROK_HOME. Meter-owned; never written under the
 /// Grok home, and never next to `auth.json`.
 public enum GrokSnapshotCache {
     public static func load(from url: URL) -> [String: Snapshot] {

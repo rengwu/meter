@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - Credentials
 
-/// The only two credential fields meter is permitted to retain. In particular,
+/// The only two credential fields Meter is permitted to retain. In particular,
 /// there is intentionally no refresh-token field or refresh operation here.
 public struct KimiCredential: Equatable {
     public let accessToken: String

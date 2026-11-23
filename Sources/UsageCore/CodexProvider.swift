@@ -53,7 +53,7 @@ public enum CodexBinaryLocator {
 
     /// Resolves the Settings value. An entered path is authoritative: silently
     /// falling through to a different installation would leave the field saying
-    /// one thing while meter executes another, and a missing override must reach
+    /// one thing while Meter executes another, and a missing override must reach
     /// the actionable `binaryNotFound` state. With no configured value, normal
     /// discovery uses the full candidate order above.
     public static func resolve(
@@ -173,10 +173,10 @@ public enum CodexFailure: Equatable {
 
     public var message: String {
         switch self {
-        case .binaryNotFound: return "can't find codex — point meter at it"
+        case .binaryNotFound: return "can't find codex — point Meter at it"
         case .signedOut: return "signed out — run codex to sign in"
         case .unreachable: return "couldn't reach OpenAI — wait"
-        case .unexpectedReply: return "unexpected reply from codex — update meter"
+        case .unexpectedReply: return "unexpected reply from codex — update Meter"
         }
     }
 }
@@ -385,7 +385,7 @@ public final class CodexClient: CodexUsageTransport {
         try encode([
             "id": 1,
             "method": "initialize",
-            "params": ["clientInfo": ["name": "meter", "version": clientVersion]],
+            "params": ["clientInfo": ["name": "Meter", "version": clientVersion]],
         ])
     }
 

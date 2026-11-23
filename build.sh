@@ -2,7 +2,7 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")" && pwd)"
-app="$root/build/meter.app"
+app="$root/build/Meter.app"
 # Release tags must agree with VERSION; an explicit argument also supports previews.
 version="${1:-$(cat "$root/VERSION")}"
 if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?$ ]]; then
@@ -17,14 +17,14 @@ for architecture in arm64 x86_64; do
   # Some SwiftPM versions share the release output path between architectures.
   build_args=(-c release --arch "$architecture" --package-path "$root"
               --scratch-path "$root/.build/universal/$architecture")
-  swift build "${build_args[@]}" --product meter
+  swift build "${build_args[@]}" --product Meter
   bin_dir="$(swift build "${build_args[@]}" --show-bin-path)"
-  binaries+=("$bin_dir/meter")
+  binaries+=("$bin_dir/Meter")
 done
 
 rm -rf "$app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
-lipo -create "${binaries[@]}" -output "$app/Contents/MacOS/meter"
+lipo -create "${binaries[@]}" -output "$app/Contents/MacOS/Meter"
 # Prebuilt so a release build needs no SVG toolchain; see Resources/make-icon.sh.
 cp "$root/Resources/AppIcon.icns" "$app/Contents/Resources/AppIcon.icns"
 cp "$root/Sources/meter/Resources/"*.pdf "$app/Contents/Resources/"
@@ -35,10 +35,10 @@ cat >"$app/Contents/Info.plist" <<PLIST
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleName</key>            <string>meter</string>
-  <key>CFBundleDisplayName</key>     <string>meter</string>
+  <key>CFBundleName</key>            <string>Meter</string>
+  <key>CFBundleDisplayName</key>     <string>Meter</string>
   <key>CFBundleIdentifier</key>      <string>local.meter</string>
-  <key>CFBundleExecutable</key>      <string>meter</string>
+  <key>CFBundleExecutable</key>      <string>Meter</string>
   <key>CFBundlePackageType</key>     <string>APPL</string>
   <!-- LSUIElement hides the Dock icon, but Finder, the DMG, Get Info and any
        app-modal alert still ask for this one. -->

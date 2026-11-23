@@ -59,7 +59,7 @@ final class StatusContentView: NSView {
                 : figure.map { "\($0.value) \(convention)" } ?? "no data"
             return "\(entry.account.label), \(entry.selectedWindow.defaultLabel): \(value)"
         }.joined(separator: ", ")
-        toolTip = summary.isEmpty ? "meter — open Settings to show accounts" : summary
+        toolTip = summary.isEmpty ? "Meter — open Settings to show accounts" : summary
         setAccessibilityElement(true)
         setAccessibilityRole(.staticText)
         setAccessibilityLabel(toolTip)

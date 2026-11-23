@@ -284,7 +284,7 @@ func runGrokProviderTests(_ t: Harness) {
         )
     }
 
-    // MARK: Cache — meter-owned, never next to auth.json
+    // MARK: Cache — Meter-owned, never next to auth.json
 
     do {
         let grokHome = root.appendingPathComponent("cache-home")
@@ -303,7 +303,7 @@ func runGrokProviderTests(_ t: Harness) {
         t.checkEqual(
             ((try? fm.subpathsOfDirectory(atPath: grokHome.path)) ?? []).sorted(),
             beforeHome,
-            "cache: storing writes only to meter support, never the Grok home"
+            "cache: storing writes only to Meter support, never the Grok home"
         )
     } catch {
         t.check(false, "cache fixture threw \(error)")

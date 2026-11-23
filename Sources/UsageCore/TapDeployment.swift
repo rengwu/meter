@@ -7,7 +7,7 @@ public enum TapDeployment {
 
     public static let script = """
     #!/bin/bash
-    # claude-usage-tap.sh — Claude Code status line command for the meter menu bar app.
+    # claude-usage-tap.sh — Claude Code status line command for the Meter menu bar app.
     # Keep this filename because existing Claude profiles store its absolute path in
     # their statusLine settings.
     #

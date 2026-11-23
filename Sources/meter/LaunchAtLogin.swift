@@ -128,7 +128,7 @@ struct LaunchAgentLoginItem: LoginItem {
 /// it *through Terminal*. The first sign is a stray Terminal window at the next
 /// login, months later, pointing at a `.build` path that may not even exist any
 /// more. So the dev copy declines to register at all; only an installed
-/// `meter.app` may become a login item.
+/// `Meter.app` may become a login item.
 struct UnsupportedLoginItem: LoginItem {
     var isSupported: Bool { false }
     var isEnabled: Bool { false }
@@ -143,7 +143,7 @@ enum LoginItemError: LocalizedError {
     case notAnAppBundle
 
     var errorDescription: String? {
-        "Launch at login needs meter to be running as an app. This copy is a "
+        "Launch at login needs Meter to be running as an app. This copy is a "
             + "loose executable, so the system would launch it through Terminal."
     }
 }

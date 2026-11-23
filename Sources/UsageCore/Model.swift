@@ -1,6 +1,6 @@
 import Foundation
 
-/// A source meter knows how to register. Provider selection is explicit: the
+/// A source Meter knows how to register. Provider selection is explicit: the
 /// presence of a provider's files on disk never creates an account.
 public enum Provider: String, CaseIterable, Codable {
     case claude

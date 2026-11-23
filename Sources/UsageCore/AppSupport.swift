@@ -21,7 +21,7 @@ public struct AppSupport {
         }
     }
 
-    /// Publish a complete copy on first launch. Later launches use meter's
+    /// Publish a complete copy on first launch. Later launches use Meter's
     /// settings even if the user has since removed all their accounts.
     public func importPreviousInstallation() throws {
         let fm = FileManager.default

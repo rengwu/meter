@@ -14,7 +14,7 @@ The final mockups are on the **Final** page of the design canvas: <https://claud
 
 ## Scope
 
-Build exactly four surfaces: the menu bar status item, its dropdown, the Settings window, and the Add Account sheet. There is no dashboard, account-detail window, notification, or onboarding flow. The dropdown's only actions are Refresh, Settings… and Quit meter.
+Build exactly four surfaces: the menu bar status item, its dropdown, the Settings window, and the Add Account sheet. There is no dashboard, account-detail window, notification, or onboarding flow. The dropdown's only actions are Refresh, Settings… and Quit Meter.
 
 The existing code is a factual reference, not a layout to keep. Apply `../jstack` `rule-lean`. Reuse the account model, provider adapters, threshold logic and folder registration where they fit, rather than rebuilding them.
 
@@ -48,7 +48,7 @@ Reset values are either a countdown (`2h 14m`, `3d 4h`, `22h 0m`) or an exact ti
 
 If there is no reading, show one unlabelled placeholder row with a muted dashed meter and a dash in the percentage column. This gives expired credentials and awaiting-refresh states the same visual structure without claiming a quota window or reset time that has not been reported.
 
-Muted native separators divide the account groups. After the accounts come a separator and **Refresh** (⌘R), **Settings…** (⌘,) and **Quit meter** (⌘Q). The mockup's menu is about 300 pt wide.
+Muted native separators divide the account groups. After the accounts come a separator and **Refresh** (⌘R), **Settings…** (⌘,) and **Quit Meter** (⌘Q). The mockup's menu is about 300 pt wide.
 
 ## States and colours
 
@@ -95,7 +95,7 @@ This is the accepted local-profile flow. The fields are:
 - **Folder:** field plus **Choose…**.
 - **Label:** field.
 
-Under the fields is one line of help: choose the folder the provider's own CLI already signs in to; meter only reads it; each account of the same provider uses its own folder.
+Under the fields is one line of help: choose the folder the provider's own CLI already signs in to; Meter only reads it; each account of the same provider uses its own folder.
 
 A **Found on this Mac** list offers discovered folders. Each shows **Use**, or "Added as <label>" if it is already registered. The buttons are **Cancel** and **Add Account** (default).
 
