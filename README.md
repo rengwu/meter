@@ -39,8 +39,7 @@ The current design and implementation notes are in [the project wiki](docs/wiki/
 
 ## Install
 
-1. Download the DMG from the [latest release](https://github.com/rengwu/meter/releases/latest).
-   Version 0.2.0 was published under the former name, Yacht. To run Meter from this checkout, see [Build](#build).
+1. Download [Meter.dmg](https://github.com/rengwu/meter/releases/latest/download/Meter.dmg).
 2. Quit any running copy, open the DMG, and drag the app into **Applications**.
 3. Open the app from Applications. Settings opens automatically when no accounts are registered.
 
@@ -63,7 +62,7 @@ Building from source requires Xcode Command Line Tools and Swift 5.9+; full Xcod
 ```
 
 Builds a universal release binary and assembles an ad-hoc-signed `build/Meter.app`.
-The bundle version comes from [`VERSION`](VERSION), currently **0.2.0**.
+The bundle version comes from [`VERSION`](VERSION).
 Move it to `/Applications` (or run it in place) and launch it like any other
 app.
 
